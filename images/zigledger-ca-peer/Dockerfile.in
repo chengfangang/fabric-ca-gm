@@ -1,0 +1,13 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+FROM Zhigui/zigledger-peer:_ZIGLEDGER_TAG_
+COPY payload/zigledger-ca-client /usr/local/bin
+ARG ZIGLEDGER_CA_DYNAMIC_LINK=false
+RUN chmod +x /usr/local/bin/zigledger-ca-client
+RUN apt-get update && apt-get install -y netcat && rm -rf /var/cache/apt
+
+# libraries needed when image is built dynamically
+RUN if [ "$ZIGLEDGER_CA_DYNAMIC_LINK" = "true" ]; then apt-get install -y libltdl-dev; fi

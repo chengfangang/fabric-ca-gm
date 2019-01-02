@@ -1,0 +1,15 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+zigledger-ca-server:
+   image: zhigui/zigledger-ca
+   container_name: zigledger-ca-server
+   ports:
+     - "7054:7054"
+   environment:
+     - ZIGLEDGER_CA_HOME=/etc/zhigui/zigledger-ca-server
+   volumes:
+     - "./zigledger-ca-server:/etc/zhigui/zigledger-ca-server"
+   command: sh -c 'zigledger-ca-server start -b admin:adminpw'

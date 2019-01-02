@@ -1,0 +1,110 @@
+#!/bin/bash
+
+######################################################################
+#
+# This script will use the zigledger-ca-server and zigledger-ca-client
+# binaries to dynamically generate the CLI flags and the
+# configuration files for both server and the client and place
+# them in the docs/source folder. These files are referenced for
+# in the zigledger-ca documentation when talking about CLI and the
+# configuration files
+#
+######################################################################
+
+echo "Making docs..."
+
+######################################################################
+# Command Line Flag Generation
+######################################################################
+
+zigledger_ca=$GOPATH/src/github.com/zhigui/zigledger-ca
+docsdir=$zigledger_ca/docs/source
+export PATH=$PATH:$zigledger_ca/bin
+
+temp=$docsdir/temp
+mkdir -p $temp
+cd $temp
+
+# RST specific syntax to indicate a code a block
+echo -e "Zigledger-CA Server's CLI" > servercli.rst
+echo -e "=======================\n" >> servercli.rst
+echo -e "::\n" >> servercli.rst
+
+echo -e "Zigledger-CA Client's CLI" > clientcli.rst
+echo -e "======================\n" >> clientcli.rst
+echo -e "::\n" >> clientcli.rst
+
+# Direct the CLI help message to a temp file
+zigledger-ca-server > servercli_temp.rst
+zigledger-ca-client > clientcli_temp.rst
+
+# Sanitize the CLI file to remove any machine specific information and provide a generic CLI
+sed -i -e 's/home directory (default.*/home directory (default "$HOME\/.zigledger-ca-client")/' clientcli_temp.rst
+sed -i -e 's/enrollment (default.*/enrollment (default "$HOSTNAME")/' clientcli_temp.rst
+sed -i -e 's/home directory (default.*/home directory (default "\/etc\/zhigui\/zigledger-ca")/' servercli_temp.rst
+
+# Insert a few spaces in front of all the lines in temp files created above (RST formatting purposes)
+sed -i -e 's/^/    /' servercli_temp.rst
+sed -i -e 's/^/    /' clientcli_temp.rst
+
+# Append temp files to ones created earlier
+cat servercli_temp.rst >> servercli.rst
+cat clientcli_temp.rst >> clientcli.rst
+
+mv servercli.rst $docsdir/servercli.rst
+mv clientcli.rst $docsdir/clientcli.rst
+
+rm $temp/* # Clean up artificats
+
+######################################################################
+# Configuration File Generation
+######################################################################
+
+# Start server and enroll client to generate the configuration files
+export ZIGLEDGER_CA_HOME=$temp
+
+echo "Starting server to generate server configuration file"
+zigledger-ca-server start -b abc:d > /dev/null 2>&1 &
+sleep 1 # Wait for server to start before client enrolls
+echo "Client enrolling to generate client configuration file"
+zigledger-ca-client enroll -u http://abc:d@localhost:7054 > /dev/null 2>&1 &
+sleep 1 # Wait for client to finish enrolling
+echo "Stopping server..."
+pkill -9 zigledger-ca-server > /dev/null 2>&1 & # Stop the server
+
+# RST specific syntax to indicate a code a block
+echo -e "Zigledger-CA Server's Configuration File" > serverconfig.rst
+echo -e "======================================\n" >> serverconfig.rst
+echo -e "::\n" >> serverconfig.rst
+
+echo -e "Zigledger-CA Client's Configuration File" > clientconfig.rst
+echo -e "======================================\n" >> clientconfig.rst
+echo -e "::\n" >> clientconfig.rst
+
+# Sanitize the configuration files to remove any machine specific information and provide a generic config file
+sed -e 's/cn:.*/cn: <<<COMMONNAME>>>/' -e 's/pathlength:.*/pathlength: <<<PATHLENGTH>>>/' -e 's/abc/<<<adminUserName>>>/' -e 's/pass:.*/pass: <<<adminPassword>>>/' -e 's/'"$HOSTNAME"'/<<<MYHOST>>>/' -e 's/version:.*/version: <<<VERSION>>>/' zigledger-ca-server-config.yaml > server-config.yaml
+sed -e 's/cn:.*/cn: <<<ENROLLMENT_ID>>>/' -e 's/'"$HOSTNAME"'/<<<MYHOST>>>/' -e 's/url:.*/url: <<<URL>>>/' zigledger-ca-client-config.yaml > client-config.yaml
+
+# Insert a few spaces in front of all the lines in temp files created above (RST formatting purposes)
+sed -i -e 's/^/    /' server-config.yaml
+sed -i -e 's/^/    /' client-config.yaml
+
+# Append temp files to ones created earlier
+cat server-config.yaml >> serverconfig.rst
+cat client-config.yaml >> clientconfig.rst
+
+mv serverconfig.rst $docsdir/serverconfig.rst
+mv clientconfig.rst $docsdir/clientconfig.rst
+
+rm -rf $temp # Clean up artificats
+
+echo "Doc generation completed"
+
+# git status by itself just returns exit code, not if there any modifications.
+# Using the --porcelain flag returns information on what files got modified, if any.
+# Only checking status under docs/source folder
+cd $docsdir
+if [[ $(git status . --porcelain --untracked-file=no) ]]; then
+    echo "ERROR: New readme files generated, commit changes before doing push"
+    exit 1
+fi
