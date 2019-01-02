@@ -19,8 +19,8 @@ import (
 	"crypto"
 	"io"
 
-	"github.com/hyperledger/fabric/bccsp"
-	"github.com/hyperledger/fabric/bccsp/utils"
+	"github.com/tjfoc/hyperledger-fabric-gm/bccsp"
+	"github.com/tjfoc/hyperledger-fabric-gm/bccsp/utils"
 	"github.com/pkg/errors"
 )
 

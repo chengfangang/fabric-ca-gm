@@ -24,7 +24,7 @@ import (
 
 	"bytes"
 
-	"github.com/hyperledger/fabric/bccsp"
+	"github.com/tjfoc/hyperledger-fabric-gm/bccsp"
 )
 
 type MockBCCSP struct {
