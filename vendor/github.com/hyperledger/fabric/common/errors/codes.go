@@ -69,36 +69,36 @@ const (
 	// BCCSP is fabic/BCCSP
 	BCCSP = "CSP"
 
-	// Common is zigledger/common
+	// Common is fabric/common
 	Common = "CMN"
 
-	// Core is zigledger/core
+	// Core is fabric/core
 	Core = "COR"
 
-	// Event is zigledger/events component
+	// Event is fabric/events component
 	Event = "EVT"
 
-	// Gossip is zigledger/gossip
+	// Gossip is fabric/gossip
 	Gossip = "GSP"
 
-	// Ledger is zigledger/core/ledger
+	// Ledger is fabric/core/ledger
 	Ledger = "LGR"
 
-	// Peer is zigledger/peer
+	// Peer is fabric/peer
 	Peer = "PER"
 
-	// Orderer is zigledger/orderer
+	// Orderer is fabric/orderer
 	Orderer = "ORD"
 
-	// MSP is zigledger/msp
+	// MSP is fabric/msp
 	MSP = "MSP"
 
-	// ChaincodeSupport is zigledger/core/chaincode
+	// ChaincodeSupport is fabric/core/chaincode
 	ChaincodeSupport = "CCS"
 
-	// DeliveryService is zigledger/core/deliverservice
+	// DeliveryService is fabric/core/deliverservice
 	DeliveryService = "CDS"
 
-	// SystemChaincode is zigledger/core/scc (system chaincode)
+	// SystemChaincode is fabric/core/scc (system chaincode)
 	SystemChaincode = "SCC"
 )

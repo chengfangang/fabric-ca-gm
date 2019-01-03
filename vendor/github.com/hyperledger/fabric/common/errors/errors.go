@@ -22,20 +22,17 @@ import (
 	"fmt"
 	"regexp"
 	"runtime"
-
-	logging "github.com/op/go-logging"
 )
 
 // MaxCallStackLength is the maximum length of the stored call stack
 const MaxCallStackLength = 30
 
 var (
-	errorLogger      = logging.MustGetLogger("error")
 	componentPattern = "[A-Za-z]{3}"
 	reasonPattern    = "[0-9]{3}"
 )
 
-// CallStackError is a general interface for Zigledger errors
+// CallStackError is a general interface for Fabric errors
 type CallStackError interface {
 	error
 	GetStack() string

@@ -12,8 +12,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+Modified gm opts  by Tongji Fintech Research Institute on 2017-09-8
 */
-
 package bccsp
 
 const (
@@ -105,6 +105,7 @@ func (opts *ECDSAKeyGenOpts) Algorithm() string {
 func (opts *ECDSAKeyGenOpts) Ephemeral() bool {
 	return opts.Temporary
 }
+
 // GMSM2KeyGenOpts contains options for GMSM2 key generation.
 type GMSM2KeyGenOpts struct {
 	Temporary bool
@@ -224,6 +225,10 @@ func (opts *AESKeyGenOpts) Ephemeral() bool {
 	return opts.Temporary
 }
 
+// AESCBCPKCS7ModeOpts contains options for AES encryption in CBC mode
+// with PKCS7 padding.
+type AESCBCPKCS7ModeOpts struct{}
+
 // HMACTruncated256AESDeriveKeyOpts contains options for HMAC truncated
 // at 256 bits key derivation.
 type HMACTruncated256AESDeriveKeyOpts struct {
@@ -282,6 +287,54 @@ func (opts *AES256ImportKeyOpts) Algorithm() string {
 // Ephemeral returns true if the key generated has to be ephemeral,
 // false otherwise.
 func (opts *AES256ImportKeyOpts) Ephemeral() bool {
+	return opts.Temporary
+}
+
+//GMSM4ImportKeyOpts  实现  bccsp.KeyImportOpts 接口
+type GMSM4ImportKeyOpts struct {
+	Temporary bool
+}
+
+// Algorithm returns the key importation algorithm identifier (to be used).
+func (opts *GMSM4ImportKeyOpts) Algorithm() string {
+	return GMSM4
+}
+
+// Ephemeral returns true if the key generated has to be ephemeral,
+// false otherwise.
+func (opts *GMSM4ImportKeyOpts) Ephemeral() bool {
+	return opts.Temporary
+}
+
+//GMSM2PrivateKeyImportOpts  实现  bccsp.KeyImportOpts 接口
+type GMSM2PrivateKeyImportOpts struct {
+	Temporary bool
+}
+
+// Algorithm returns the key importation algorithm identifier (to be used).
+func (opts *GMSM2PrivateKeyImportOpts) Algorithm() string {
+	return GMSM2
+}
+
+// Ephemeral returns true if the key generated has to be ephemeral,
+// false otherwise.
+func (opts *GMSM2PrivateKeyImportOpts) Ephemeral() bool {
+	return opts.Temporary
+}
+
+//GMSM2PublicKeyImportOpts  实现  bccsp.KeyImportOpts 接口
+type GMSM2PublicKeyImportOpts struct {
+	Temporary bool
+}
+
+// Algorithm returns the key importation algorithm identifier (to be used).
+func (opts *GMSM2PublicKeyImportOpts) Algorithm() string {
+	return GMSM2
+}
+
+// Ephemeral returns true if the key generated has to be ephemeral,
+// false otherwise.
+func (opts *GMSM2PublicKeyImportOpts) Ephemeral() bool {
 	return opts.Temporary
 }
 
@@ -357,50 +410,3 @@ func (opts *X509PublicKeyImportOpts) Algorithm() string {
 func (opts *X509PublicKeyImportOpts) Ephemeral() bool {
 	return opts.Temporary
 }
-//GMSM4ImportKeyOpts  实现  bccsp.KeyImportOpts 接口
-type GMSM4ImportKeyOpts struct {
-	Temporary bool
-}
-
-// Algorithm returns the key importation algorithm identifier (to be used).
-func (opts *GMSM4ImportKeyOpts) Algorithm() string {
-	return GMSM4
-}
-
-// Ephemeral returns true if the key generated has to be ephemeral,
-// false otherwise.
-func (opts *GMSM4ImportKeyOpts) Ephemeral() bool {
-	return opts.Temporary
-}
-
-//GMSM2PrivateKeyImportOpts  实现  bccsp.KeyImportOpts 接口
-type GMSM2PrivateKeyImportOpts struct {
-	Temporary bool
-}
-
-// Algorithm returns the key importation algorithm identifier (to be used).
-func (opts *GMSM2PrivateKeyImportOpts) Algorithm() string {
-	return GMSM2
-}
-
-// Ephemeral returns true if the key generated has to be ephemeral,
-// false otherwise.
-func (opts *GMSM2PrivateKeyImportOpts) Ephemeral() bool {
-	return opts.Temporary
-}
-//GMSM2PublicKeyImportOpts  实现  bccsp.KeyImportOpts 接口
-type GMSM2PublicKeyImportOpts struct {
-	Temporary bool
-}
-
-// Algorithm returns the key importation algorithm identifier (to be used).
-func (opts *GMSM2PublicKeyImportOpts) Algorithm() string {
-	return GMSM2
-}
-
-// Ephemeral returns true if the key generated has to be ephemeral,
-// false otherwise.
-func (opts *GMSM2PublicKeyImportOpts) Ephemeral() bool {
-	return opts.Temporary
-}
-
