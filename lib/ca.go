@@ -344,7 +344,7 @@ func (ca *CA) getCACert() (cert []byte, err error) {
 		}
 		if csr.KeyRequest == nil {
 			if IsGMConfig() {
-				csr.KeyRequest = cfcsr.NewGMKeyRequest()
+				csr.KeyRequest = api.NewGMKeyRequest()
 			} else {
 				csr.KeyRequest = GetKeyRequest(ca.Config)
 			}

@@ -33,7 +33,7 @@ import (
 	"github.com/chengfangang/fabric-ca-gm/lib/spi"
 	ctls "github.com/chengfangang/fabric-ca-gm/lib/tls"
 	"github.com/chengfangang/fabric-ca-gm/util"
-	"github.com/hyperledger/fabric/bccsp"
+	"github.com/tjfoc/hyperledger-fabric-gm/bccsp"
 	ldap "gopkg.in/ldap.v2"
 )
 

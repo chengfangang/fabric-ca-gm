@@ -197,7 +197,6 @@ func processSignRequest(id string, req *signer.SignRequest, ca *CA, ctx *serverR
 		return cferr.Wrap(cferr.CSRError,
 			cferr.BadRequest, errors.New("not a certificate or csr"))
 	}
-	csrReq, err := x509.ParseCertificateRequest(block.Bytes)
 	var csrReq *x509.CertificateRequest
 	var err error
 	if IsGMConfig() {

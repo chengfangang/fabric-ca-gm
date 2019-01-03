@@ -34,8 +34,8 @@ import (
 	"github.com/cloudflare/cfssl/log"
 	"github.com/chengfangang/fabric-ca-gm/api"
 	"github.com/chengfangang/fabric-ca-gm/util"
-	"github.com/hyperledger/fabric/bccsp"
-	cspsigner "github.com/hyperledger/fabric/bccsp/signer"
+	"github.com/tjfoc/hyperledger-fabric-gm/bccsp"
+	cspsigner "github.com/tjfoc/hyperledger-fabric-gm/bccsp/signer"
 )
 
 var (

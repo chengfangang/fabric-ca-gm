@@ -359,3 +359,8 @@ func NewBasicKeyRequest() *BasicKeyRequest {
 	bkr := csr.NewBasicKeyRequest()
 	return &BasicKeyRequest{Algo: bkr.A, Size: bkr.S}
 }
+
+func NewGMKeyRequest() *BasicKeyRequest {
+	return &BasicKeyRequest{Algo: "gmsm2", Size: 256}
+}
+

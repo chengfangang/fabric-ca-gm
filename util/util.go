@@ -46,6 +46,7 @@ import (
 
 	"github.com/cloudflare/cfssl/log"
 	"github.com/tjfoc/hyperledger-fabric-gm/bccsp"
+	"github.com/tjfoc/gmsm/sm2"
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/ocsp"
 )

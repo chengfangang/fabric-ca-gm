@@ -150,7 +150,7 @@ func getBCCSPKeyOpts(kr csr.KeyRequest, ephemeral bool) (opts bccsp.KeyGenOpts, 
 			return nil, errors.Errorf("Invalid ECDSA key size: %d", kr.Size())
 		}
 	case "gmsm2":
-		return *bccsp.GMSM2KeyGenOpts{Temporary: ephemeral}, nil
+		return &bccsp.GMSM2KeyGenOpts{Temporary: ephemeral}, nil
 	default:
 		return nil, errors.Errorf("Invalid algorithm: %s", kr.Algo())
 	}
