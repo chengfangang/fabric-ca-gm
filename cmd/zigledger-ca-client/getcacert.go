@@ -127,7 +127,7 @@ func storeCAChain(config *lib.ClientConfig, si *lib.GetServerInfoResponse) error
 		if lib.IsGMConfig() {
 			sm2x509Cert, err := sm2.ParseCertificate(block.Bytes)
 			if err == nil {
-				cert = ParseSm2Certificate2X509(sm2x509Cert)
+				cert = util.ParseSm2Certificate2X509(sm2x509Cert)
 			}
 		} else {
 			cert, err = x509.ParseCertificate(block.Bytes)
