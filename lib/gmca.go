@@ -159,6 +159,10 @@ func parseCertificateRequest(csrBytes []byte) (template *sm2.Certificate, err er
 			template.MaxPathLen = constraints.MaxPathLen
 			template.MaxPathLenZero = template.MaxPathLen == 0
 		}
+
+		if val.Id.Equal(asn1.ObjectIdentifier{2, 5, 29, 14}) {
+			template.SubjectKeyId = val.Value
+		}
 	}
 	serialNumber := make([]byte, 20)
 	_, err = io.ReadFull(rand.Reader, serialNumber)
@@ -207,6 +211,10 @@ func generate(priv crypto.Signer, req *csr.CertificateRequest, key bccsp.Key) (c
 	if req.SerialNumber != "" {
 
 	}
+	tpl.ExtraExtensions = append(tpl.ExtraExtensions, pkix.Extension{
+			Id:       asn1.ObjectIdentifier{2, 5, 29, 14},
+			Value:    key.SKI(),
+		})
 	csr, err = gm.CreateSm2CertificateRequestToMem(&tpl, key)
 	log.Info("xx exit generate")
 	return
@@ -238,13 +246,11 @@ func appendCAInfoToCSR(reqConf *csr.CAConfig, csreq *x509.CertificateRequest) er
 		return err
 	}
 
-	csreq.ExtraExtensions = []pkix.Extension{
-		{
+	csreq.ExtraExtensions = append(csreq.ExtraExtensions, pkix.Extension{
 			Id:       asn1.ObjectIdentifier{2, 5, 29, 19},
 			Value:    val,
 			Critical: true,
-		},
-	}
+		})
 	return nil
 }
 
@@ -260,13 +266,11 @@ func appendCAInfoToCSRSm2(reqConf *csr.CAConfig, csreq *sm2.CertificateRequest) 
 		return err
 	}
 
-	csreq.ExtraExtensions = []pkix.Extension{
-		{
+	csreq.ExtraExtensions = append(csreq.ExtraExtensions, pkix.Extension{
 			Id:       asn1.ObjectIdentifier{2, 5, 29, 19},
 			Value:    val,
 			Critical: true,
-		},
-	}
+		})
 
 	return nil
 }
